@@ -7,14 +7,18 @@ public class PlayerMovement : MonoBehaviour
 
     #region Variables
 
+    public GameObject ladderParent;
+
     public float climbRate;
     public float sideMoveAmount;
     public float sideJumpAmount;
 
-    public GameObject ladderParent;
+    public int currentSide;
+    public int currentLadder = 1;
 
-    int currentSide;
-    int currentLadder = 1;
+    public bool isAlive = false;
+
+    public int score;
 
     float movementAmount;
 
@@ -22,6 +26,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (!isAlive)
+        {
+            return;
+        }
+
         movementAmount = sideMoveAmount;
 
         if (currentSide == 0)
@@ -35,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
             transform.GetChild(0).Translate(Vector2.left * 0.1f * movementAmount);
 
             currentSide = -1;
+
+            score++;
         }
 
         if (currentSide != 1 && Input.GetKeyDown(KeyCode.E))
@@ -43,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
             transform.GetChild(0).Translate(Vector2.right * 0.1f * movementAmount);
 
             currentSide = 1;
+
+            score++;
         }
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -103,5 +116,10 @@ public class PlayerMovement : MonoBehaviour
                 currentLadder = 2;
             }
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        isAlive = false;
     }
 }

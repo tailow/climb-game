@@ -9,16 +9,28 @@ public class CameraMovement : MonoBehaviour
 
     public GameObject player;
 
+    public Vector3 cameraOffset;
+
     public float smoothAmount;
+
+    PlayerMovement movementScript;
 
     #endregion
 
+    void Start()
+    {
+        movementScript = player.GetComponent<PlayerMovement>();
+    }
+
     void Update()
     {
-        Vector3 desiredPos = player.transform.position;
-        desiredPos.z = -10;
+        if (movementScript.isAlive)
+        {
+            Vector3 desiredPos = player.transform.position + cameraOffset;
+            desiredPos.z = -10;
 
-        transform.position = Vector3.Lerp(transform.position, desiredPos,
-        Time.deltaTime / smoothAmount);
+            transform.position = Vector3.Lerp(transform.position, desiredPos,
+            Time.deltaTime / smoothAmount);
+        }
     }
 }
